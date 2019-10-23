@@ -8,31 +8,31 @@ if (typeof (DatatablesRenderer) == 'undefined') var DatatablesRenderer = functio
 		        
                 // Strange behaviour from IE. 
                 // It comes here 2 times per row, so I have to stop rendering a second time to avoid desctruction of the rendering
-		        // if (context != "timeslider" && element.innerHTML && element.innerHTML.indexOf("payload") != 2) { console.log("DO NOTHING"); return; }
+		        if (context != "timeslider" && element.innerHTML && element.innerHTML.indexOf("payload") != 2) { console.log("DO NOTHING"); return; }
                 
-                // var renderer = new DatatablesRenderer.Renderer();
-                // // while(element.children.length > 0 && element.className != "table-data") {
-                // //     element = element.children[0];
-                // //     console.log("getting child element", element.innerHTML, element);
-                // // }
-                // if (context == "timeslider") {
-                //   var regex1 = new RegExp('(^\<span\ class=""\>)', 'i');
-                //   var regex2 = new RegExp('(\<\/span\>)$', 'i');
-                //   code = renderer.htmlspecialchars_decode(element.innerHTML)
-                //            .replace(regex1, '')
-                //            .replace(regex2, '');
-                // } else if (context == "export") {
-                //   code = element.text;
-                // } else if (element.innerText) code = element.innerHTML;
-                // else code = element.innerHTML;
-
-                // if (context == "export") {
-                //   // For export, I need to send back the formatted text
-                //   return renderer.getHtml(code, attributes, context);
-                // } else {
-                //   // For others, I need to modify the content of the element
-                //   element.innerHTML = renderer.getHtml(code, attributes, context);
+                var renderer = new DatatablesRenderer.Renderer();
+                // while(element.children.length > 0 && element.className != "table-data") {
+                //     element = element.children[0];
+                //     console.log("getting child element", element.innerHTML, element);
                 // }
+                if (context == "timeslider") {
+                  var regex1 = new RegExp('(^\<span\ class=""\>)', 'i');
+                  var regex2 = new RegExp('(\<\/span\>)$', 'i');
+                  code = renderer.htmlspecialchars_decode(element.innerHTML)
+                           .replace(regex1, '')
+                           .replace(regex2, '');
+                } else if (context == "export") {
+                  code = element.text;
+                } else if (element.innerText) code = element.innerHTML;
+                else code = element.innerHTML;
+
+                if (context == "export") {
+                  // For export, I need to send back the formatted text
+                  return renderer.getHtml(code, attributes, context);
+                } else {
+                  // For others, I need to modify the content of the element
+                  element.innerHTML = renderer.getHtml(code, attributes, context);
+                }
             }
         }; // end of dRenderer
         dRenderer.Renderer = function () {
