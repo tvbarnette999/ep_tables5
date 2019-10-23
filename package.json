@@ -1,11 +1,11 @@
 {
   "author": "quenenni,Gedion Woldeselassie,Tenzin Tsetan <quenenni@github,Sebastian Castro <seballot@github>",
-  "name": "ep_tables2",
+  "name": "ep_tables3",
   "description": "Adds tables to etherpad-lite",
   "version": "0.3.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/quenenni/ep_tables2.git"
+    "url": "git://github.com/SvetaPrepPrep/ep_tables2.git"
   },
   "engines": {
     "node": "*"
@@ -19,8 +19,8 @@
   "_defaultsLoaded": true,
   "_from": "ep_tables2",
   "_npmUser": {
-    "name": "quenenni",
-    "email": "quenenni@github"
+    "name": "svetaPrepPrep",
+    "email": "bistroplit@gmail.com"
   },
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   ],
   "license": " Apache License V2",
   "bugs": {
-    "url": "https://github.com/quenenni/ep_tables2/issues"
+    "url": "https://github.com/quenenni/SvetaPrepPrep/ep_tables2"
   },
-  "homepage": "https://github.com/quenenni/ep_tables2"
+  "homepage": "https://github.com/SvetaPrepPrep/ep_tables2"
 }
