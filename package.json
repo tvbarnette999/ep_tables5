@@ -30,7 +30,7 @@
     "etherpad-lite",
     "tables"
   ],
-  "license": " Apache License V2",
+  "license": "LicenseRef-LICENSE",
   "bugs": {
     "url": "https://github.com/quenenni/SvetaPrepPrep/ep_tables2"
   },
