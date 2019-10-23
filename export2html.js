@@ -1,5 +1,5 @@
 
-var DatatablesRendererExport = require('ep_tables2/static/js/datatables-renderer.js');
+var DatatablesRendererExport = require('ep_tables3/static/js/datatables-renderer.js');
 
 exports.getLineHTMLForExport = function (hook, context) {
   if (context.text.indexOf("data-tables") != -1) {
