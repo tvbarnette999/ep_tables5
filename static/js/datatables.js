@@ -1056,7 +1056,7 @@ if (typeof (Datatables) == 'undefined') var Datatables = function () {
     // Doesn't do any normalising, returns a string
     // of text as found.
     dt.toString = function () {
-      return "ep_tables2";
+      return "ep_tables4";
     };
     dt.getLineAndCharForPoint = function () {
       var context = this.context;
