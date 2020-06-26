@@ -1,6 +1,6 @@
 {
   "name": "ep_tables4",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Insert tables into your Etherpad documents",
   "main": "index.js",
   "scripts": {
