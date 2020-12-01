@@ -17,23 +17,21 @@ if (typeof (DatatablesRenderer) == 'undefined') var DatatablesRenderer = functio
                 //     console.log("getting child element", element.innerHTML, element);
                 // }
                 if (context == "timeslider") {
-                  var regex1 = new RegExp('(^\<span\ class=""\>)', 'i');
-                  var regex2 = new RegExp('(\<\/span\>)$', 'i');
-                  code = renderer.htmlspecialchars_decode(element.innerHTML)
-                           .replace(regex1, '')
-                           .replace(regex2, '');
+                    //***********************************************************************//
+                    //Another way to preprocess innerHTML data to resolve timeslider problem.//
+                    //***********************************************************************//
+                    element.innerHTML = renderer.htmlspecialchars_decode(element.innerHTML);
+                    element.innerHTML = element.innerHTML.split("\<\/span\>");
+                    for(var i in element.innerHTML){
+                      element.innerHTML[i] = element.innerHTML[i].replace(/<.+">/gi, '');
+                      }
+                    element.innerHTML = element.innerHTML.join("");
                 } else if (context == "export") {
                   code = element.text;
-                } else if (element.innerText) code = element.innerHTML;
-                else code = element.innerHTML;
-
-                if (context == "export") {
-                  // For export, I need to send back the formatted text
-                  return renderer.getHtml(code, attributes, context);
-                } else {
-                  // For others, I need to modify the content of the element
-                  element.innerHTML = renderer.getHtml(code, attributes, context);
                 }
+                element.innerHTML = element.innerHTML.replace(/(<\/a>)/ig, '').replace(/(<a.+">)/ig, '');  //Remove the <a> tag when enter url in cells.
+                element.innerHTML = renderer.getHtml(element.innerHTML, attributes, context);
+
             }
         }; // end of dRenderer
         dRenderer.Renderer = function () {
