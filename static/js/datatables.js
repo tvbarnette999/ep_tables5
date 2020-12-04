@@ -32,38 +32,6 @@ exports.acePostWriteDomLineHTML = function (hook_name, args, cb) {
 	else{
 		console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 	
-	// if (!args.node.tagName && args.node.innerHTML && args.node.innerHTML.indexOf("data-tables") != -1){
-	//   // For the Timeslider
-	//   var dtAttrs = typeof (exports.Datatables) != 'undefined' ? exports.Datatables.attributes : null;
-	//   DatatablesRenderer.render("timeslider", args.node, dtAttrs);
-	// } else {
-		// For the Pad
-		
-		while(node.children.length == 1) {
-			node = node.children[0];
-			// console.log("SKIP", node.tagName);
-		}
-
-		// CONCATENATE MULTIPLE NODES INTO ONE
-		if (node.children.length > 0) {  
-			// console.log("CONCATENATE CHILDREN");    
-			// Case when etherpad interact with the content of a cell and breaks the block into several blocks (like when applying bold ot italic style)
-			// In that case, we have to regroup everything before rendering the line.
-			var parts = node.children[0].innerHTML.split('{"payload":[["');
-			node.children[0].innerHTML = '{"payload":[["' + parts.join('');
-			// console.log("CHILD 0", node.children[0].innerHTML);
-			for (var i = 1; i < node.children.length; i++) {
-				innerHTML = node.children[i].innerHTML;        
-				innerHTML = innerHTML.replace(/(<.+>)","/ig, '","\$1');
-				// console.log("CHILD " + i, innerHTML);
-				node.children[0].innerHTML += innerHTML;
-				node.children[i].innerHTML = "";
-				node.children[i] = null;
-			}
-			node = node.children[0];  
-		}
-	}
-
 		// RENDER NODE
 		var dtAttrs = typeof (exports.Datatables) != 'undefined' ? exports.Datatables.attributes : null;
 		dtAttrs = dtAttrs || "";

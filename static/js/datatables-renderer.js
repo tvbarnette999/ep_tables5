@@ -4,18 +4,17 @@ if (typeof (DatatablesRenderer) == 'undefined') var DatatablesRenderer = functio
                 var renderer = new DatatablesRenderer.Renderer();
                 // Strange behaviour from IE. 
                 // It comes here 2 times per row, so I have to stop rendering a second time to avoid desctruction of the rendering
-                if (context != "timeslider" && element.innerHTML && element.innerHTML.indexOf("payload") != 2) { //console.log("DO NOTHING");
-                 return; }
+                // if (context != "timeslider" && element.innerHTML && element.innerHTML.indexOf("payload") != 2) { //console.log("DO NOTHING");
+                //  return; }
 
-                //Preprocess this to get rid of anything between <>, like <span> or <a>
-                element.innerHTML = element.innerHTML.replace(/(<.+?>)/ig, '');
                 if (context == "timeslider") {
                     element.innerHTML = renderer.htmlspecialchars_decode(element.innerHTML);     
                 } else if (context == "export") {
                   // For export, I need to send back the formatted text
                   return renderer.getHtml(element.text, attributes, context);
                 }
-                element.innerHTML = renderer.getHtml(element.innerHTML, attributes, context);
+                var str = renderer.preprocess(element.innerHTML);
+                element.innerHTML = renderer.getHtml(str, attributes, context);
                 
                 var renderer = new DatatablesRenderer.Renderer();
             }
@@ -24,6 +23,27 @@ if (typeof (DatatablesRenderer) == 'undefined') var DatatablesRenderer = functio
             //	
         };
         dRenderer.Renderer.prototype = {
+            preprocess: function(innerHTML) {
+              console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ preprocess;", innerHTML);
+              var reg0 = /\[\["(.+)"\]\]/;
+              var reg1 = /^<.+?>/;
+              var reg2 = /<\/span>$/;
+              var reg3 = /author-a-\w+/;
+              var reg4 = /<span class='author-a-\w+'>\s*<\/span>/g;
+              var tblAuthor = innerHTML.match(reg3);
+              console.log("tblAuthor", tblAuthor);
+              tblAuthor = "<span class='" + tblAuthor[0] + "'>";
+              var str = innerHTML.match(reg0);
+              var part = str[1].split('","');
+              for(i in part){
+                part[i] = part[i].replace(/"/g, "'");
+                part[i] = tblAuthor + part[i] + "</span>";
+              };
+              part = '[["' + part.join('","') + '"]]';
+              innerHTML = innerHTML.replace(reg0, part).replace(reg1, '').replace(reg2, '').replace(reg4, '');
+              console.log("##################################### preprocess done;", innerHTML);
+              return innerHTML;
+            },
             createDefaultTblProperties: function (authors) {
                 return {
                     borderWidth: "1",
