@@ -1,37 +1,23 @@
 if (typeof (DatatablesRenderer) == 'undefined') var DatatablesRenderer = function () {
         var dRenderer = {
             render: function (context, element, attributes) {
-                // console.log("Render element", element.innerHTML, element);
-
                 var renderer = new DatatablesRenderer.Renderer();
-                element.innerHTML = renderer.getHtml(element.innerHTML, attributes, context);
-		        
                 // Strange behaviour from IE. 
                 // It comes here 2 times per row, so I have to stop rendering a second time to avoid desctruction of the rendering
                 if (context != "timeslider" && element.innerHTML && element.innerHTML.indexOf("payload") != 2) { //console.log("DO NOTHING");
                  return; }
+
+                //Preprocess this to get rid of anything between <>, like <span> or <a>
+                element.innerHTML = element.innerHTML.replace(/(<.+?>)/ig, '');
+                if (context == "timeslider") {
+                    element.innerHTML = renderer.htmlspecialchars_decode(element.innerHTML);     
+                } else if (context == "export") {
+                  // For export, I need to send back the formatted text
+                  return renderer.getHtml(element.text, attributes, context);
+                }
+                element.innerHTML = renderer.getHtml(element.innerHTML, attributes, context);
                 
                 var renderer = new DatatablesRenderer.Renderer();
-                // while(element.children.length > 0 && element.className != "table-data") {
-                //     element = element.children[0];
-                //     console.log("getting child element", element.innerHTML, element);
-                // }
-                if (context == "timeslider") {
-                    //***********************************************************************//
-                    //Another way to preprocess innerHTML data to resolve timeslider problem.//
-                    //***********************************************************************//
-                    element.innerHTML = renderer.htmlspecialchars_decode(element.innerHTML);
-                    element.innerHTML = element.innerHTML.split("\<\/span\>");
-                    for(var i in element.innerHTML){
-                      element.innerHTML[i] = element.innerHTML[i].replace(/<.+">/gi, '');
-                      }
-                    element.innerHTML = element.innerHTML.join("");
-                } else if (context == "export") {
-                  code = element.text;
-                }
-                element.innerHTML = element.innerHTML.replace(/(<\/a>)/ig, '').replace(/(<a.+">)/ig, '');  //Remove the <a> tag when enter url in cells.
-                element.innerHTML = renderer.getHtml(element.innerHTML, attributes, context);
-
             }
         }; // end of dRenderer
         dRenderer.Renderer = function () {
