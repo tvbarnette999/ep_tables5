@@ -1,12 +1,18 @@
 
-var DatatablesRendererExport = require('ep_tables5/static/js/datatables-renderer.js');
+var DatatablesRendererExport = require('ep_tables4/static/js/datatables-renderer.js');
 
 exports.getLineHTMLForExport = function (hook, context) {
   if (context.text.indexOf("data-tables") != -1) {
-    var attribIndex = retrieveIndex(context.attribLine);
-    if (attribIndex) {
-      var dtAttrs = context.apool.numToAttrib[attribIndex][1];
-      context.lineContent = DatatablesRendererExport.DatatablesRenderer.render("export", context, dtAttrs);
+    var json = JSON.parse(context.text);
+    if(json.tblProperties){
+      console.log("tblProperties", json.tblProperties);
+      context.lineContent = DatatablesRendererExport.DatatablesRenderer.render("export", context, null);      
+    } else {
+      var attribIndex = retrieveIndex(context.attribLine);
+      if (attribIndex != null) {
+        var dtAttrs = context.apool.numToAttrib[attribIndex][1];
+        context.lineContent = DatatablesRendererExport.DatatablesRenderer.render("export", context, dtAttrs);
+      }
     }
   }
   return true;
@@ -22,14 +28,6 @@ retrieveIndex = function (attribLine) {
   }
   attribLine = attribLine[index].split('+');
   attribLine = attribLine[0] + "";
-
-  for (var i = 0; i < attribLine.length; i++) {
-    if (i == attribLine.length - 1) {
-      attribIndex += arr_indices[attribLine[i]];
-    } else {
-      attribIndex += 36 * arr_indices[attribLine[i]];
-    }
-  }
-
-  return attribIndex;
+  var attribLine = parseInt(attribLine[0], 36);
+  return attribLine;
 }
