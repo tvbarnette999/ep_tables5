@@ -4,5 +4,5 @@ Forked from WC2-Foundation
 
 Initial project (but dead & broken) from Gideon (https://github.com/gedion/ep_tables)
 
-The plugin is available in English, French, German, Spanish & Traditional Chinese.
+The plugin is available in English, French, German, Hungarian, Spanish and Traditional Chinese.
 If you want another language, take the locales/en.json file and translate it (it's not big).
