@@ -24,25 +24,38 @@ if (typeof (DatatablesRenderer) == 'undefined') var DatatablesRenderer = functio
         };
         dRenderer.Renderer.prototype = {
             preprocess: function(innerHTML) {
-              console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ preprocess;", innerHTML);
-              var reg0 = /\[\["(.+)"\]\]/;
-              var reg1 = /^<.+?>/;
-              var reg2 = /<\/span>$/;
-              var reg3 = /author-a-\w+/;
-              var reg4 = /<span class='author-a-\w+'>\s*<\/span>/g;
-              var tblAuthor = innerHTML.match(reg3);
-              console.log("tblAuthor", tblAuthor);
-              tblAuthor = "<span class='" + tblAuthor[0] + "'>";
-              var str = innerHTML.match(reg0);
-              var part = str[1].split('","');
-              for(i in part){
-                part[i] = part[i].replace(/"/g, "'");
+            /*
+                Move all of HTML tags(<span>) into payload array.
+                Also replace any double quote(") with single quote(') within array to prevent JSON.parse error.
+                (innerHTML will be sent to getHtml() to parse and define properties,
+                after that, it will be sent to buildTabularData() to creat <table> tags.)
+            */
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ preprocess;", innerHTML);
+            var reg0 = /\[\["(.+)"\]\]/;
+            var reg1 = /(^<.+?>){/;
+            var reg2 = /}(<.+?>)$/;
+            var reg3 = /author-a-\w+/;
+            var reg4 = /<span class='author-a-\w+'>\s*<\/span>/g;
+            var str = innerHTML.match(reg0);
+            var head = innerHTML.match(reg1);
+            var tail = innerHTML.match(reg2);
+            var tblAuthor = innerHTML.match(reg3);
+            var part = str[1].split('","');
+            tblAuthor = "<span class='" + tblAuthor[0] + "'>";
+            for(i in part){
+            if(i == 0){
+                part[i] = head[1] + part[i] + "</span>";
+            } else if (i == part.length-1) {
+                part[i] = tblAuthor + part[i] + tail[1];
+            } else {
                 part[i] = tblAuthor + part[i] + "</span>";
-              };
-              part = '[["' + part.join('","') + '"]]';
-              innerHTML = innerHTML.replace(reg0, part).replace(reg1, '').replace(reg2, '').replace(reg4, '');
-              console.log("##################################### preprocess done;", innerHTML);
-              return innerHTML;
+            }
+            part[i] = part[i].replace(/"/g, "'");
+            };
+            part = '[["' + part.join('","') + '"]]';
+            innerHTML = innerHTML.replace(reg0, part).replace(reg1, '{').replace(reg2, '}').replace(reg4, '');
+            console.log("##################################### preprocess done;", innerHTML);
+            return innerHTML;
             },
             createDefaultTblProperties: function (authors) {
                 return {
