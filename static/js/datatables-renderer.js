@@ -40,7 +40,12 @@ if (typeof (DatatablesRenderer) == 'undefined') var DatatablesRenderer = functio
             var head = innerHTML.match(reg1);
             var tail = innerHTML.match(reg2);
             var tblAuthor = innerHTML.match(reg3);
-            var part = str[1].split('","');
+            var part;
+            if (str == null){
+                part = [];
+            } else {
+                part = str[1].split('","');
+            }
             tblAuthor = "<span class='" + tblAuthor[0] + "'>";
             for(i in part){
             if(i == 0){
