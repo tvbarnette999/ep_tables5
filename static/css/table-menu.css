@@ -1,3 +1,7 @@
+.readonly #table-menu-button {
+  display: none;
+}
+
 #table-menu-button button:before {
   content: "\F0CE";
 }

@@ -11,10 +11,10 @@ exports.acePostWriteDomLineHTML = function (hook_name, args, cb) {
     var context = {};
     // var initialNode = args.node;
     // Do nothing if the line is not a table line
-    if (node.innerHTML.indexOf("data-tables") == -1) return;
+    if (node.innerHTML.indexOf("data-tables") == -1) return cb();
     // Sometime, on initialisation, the table is rendered two times
     // If <tbody> exist inside DOM, that's means that the table has already been rendered
-    if (node.innerHTML.indexOf("<tbody>") != -1) return;
+    if (node.innerHTML.indexOf("<tbody>") != -1) return cb();
 
 
     $node = $(args.node);
@@ -40,6 +40,7 @@ exports.acePostWriteDomLineHTML = function (hook_name, args, cb) {
         // initialNode.innerHTML = node.innerHTML;
         // }
     }
+    return cb();
 }
 
 exports.aceAttribsToClasses = function (hook, context) {
